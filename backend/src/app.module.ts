@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { StudentsModule } from './students/students.module';
 
+import { User } from './users/entities/user.entity';
+import { StudentProfile } from './students/entities/student-profile.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,7 +22,8 @@ import { StudentsModule } from './students/students.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
 
-      autoLoadEntities: true,
+      entities: [User, StudentProfile],
+
       synchronize: true,
     }),
 
