@@ -1,25 +1,52 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import {
+  SwaggerModule,
+  DocumentBuilder,
+} from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe(),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('SAMS API')
-    .setDescription('Student Admission Management System')
+    .setDescription(
+      'Student Admission Management System',
+    )
     .setVersion('1.0')
-    .addBearerAuth()
+    
+    .addBearerAuth(
+      {
+        type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+    name: 'JWT',
+    description: 'Enter JWT token',
+    in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document =
+    SwaggerModule.createDocument(
+      app,
+      config,
+    );
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup(
+    'api',
+    app,
+    document,
+  );
 
   await app.listen(3000);
 }
+
 bootstrap();
