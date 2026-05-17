@@ -53,34 +53,36 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    const { email, password } = loginDto;
+  const { email, password } = loginDto;
 
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
+  const user = await this.userRepository.findOne({
+    where: { email },
+  });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const isPasswordMatched = await bcrypt.compare(
-      password,
-      user.password,
-    );
-
-    if (!isPasswordMatched) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const token = this.jwtService.sign({
-      sub: user.id,
-      role: user.role,
-    });
-
-    return {
-      access_token: token,
-    };
+  if (!user) {
+    throw new UnauthorizedException('Invalid credentials');
   }
+
+  const isPasswordMatched = await bcrypt.compare(
+    password,
+    user.password,
+  );
+
+  if (!isPasswordMatched) {
+    throw new UnauthorizedException('Invalid credentials');
+  }
+
+  const token = this.jwtService.sign({
+    sub: user.id,
+    role: user.role,
+  });
+
+  return {
+    message: 'Login successful',
+    access_token: token,
+    user,
+  };
+}
 
   async getCurrentUser(userId: number) {
     return this.userRepository.findOne({
