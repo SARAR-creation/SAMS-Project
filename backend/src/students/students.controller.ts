@@ -8,14 +8,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 import { StudentsService } from './students.service';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 import { ApplyStudentDto } from './dto/apply-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
