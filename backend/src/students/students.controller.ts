@@ -15,6 +15,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApplyStudentDto } from './dto/apply-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiBearerAuth('access-token')
 @UseGuards(JwtAuthGuard)
 @Controller('students')
 export class StudentsController {
