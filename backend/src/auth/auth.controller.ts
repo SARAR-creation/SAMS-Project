@@ -14,6 +14,8 @@ import { LoginDto } from './dto/login.dto';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -28,8 +30,10 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  
   getMe(@Req() req) {
     return this.authService.getCurrentUser(req.user.userId);
   }
